@@ -1,0 +1,306 @@
+/* ============================================================
+   KGR BASKETBALL LEAGUE — stylesheet
+   Street / playground aesthetic: warm charcoal, basketball
+   orange, cream. Condensed varsity display + scoreboard mono.
+   ============================================================ */
+
+:root {
+  --ink:      #17150f;   /* warm near-black */
+  --ink-2:    #201d15;   /* panel */
+  --ink-3:    #2b271c;   /* raised */
+  --ink-4:    #38331f;   /* hover / border-strong */
+  --cream:    #f4f0e6;
+  --cream-dim:#cbc4b2;
+  --steel:    #8c8678;   /* concrete gray */
+  --steel-dim:#5f5b4f;
+
+  --accent:   #e8622c;   /* basketball orange (tweakable, set on .app-root) */
+  --accent-2: color-mix(in srgb, var(--accent) 80%, #fff);
+  --accent-ink:#1a0d05;
+
+  --win:  #6fbf73;
+  --loss: #b8534f;
+
+  --line:   rgba(244,240,230,0.10);
+  --line-2: rgba(244,240,230,0.18);
+
+  --font-display: "Anton", "Barlow Condensed", sans-serif;
+  --font-cond: "Barlow Condensed", sans-serif;
+  --font-body: "Barlow", system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, monospace;
+
+  --maxw: 1240px;
+  --radius: 4px;
+  --grit: 1; /* texture intensity, tweakable */
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; }
+body {
+  background: var(--ink);
+  color: var(--cream);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+/* Global grit: faint noise + court-paint vignette */
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: 9000; pointer-events: none;
+  opacity: calc(0.05 * var(--grit));
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='160' height='160' filter='url(%23n)'/></svg>");
+  mix-blend-mode: overlay;
+}
+
+h1, h2, h3 { margin: 0; line-height: 0.95; }
+p { margin: 0; }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+::selection { background: var(--accent); color: var(--accent-ink); }
+
+.kgr-wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 28px; }
+.kgr-mono { font-family: var(--font-mono); }
+
+/* hazard / court stripe util */
+.kgr-stripes {
+  background-image: repeating-linear-gradient(-45deg,
+    var(--accent) 0 14px, transparent 14px 28px);
+}
+
+/* ============================================================
+   LOGO (placeholder)
+   ============================================================ */
+.kgr-logo { display: inline-flex; align-items: center; gap: 11px; }
+.kgr-logo-badge {
+  position: relative; width: var(--lg); height: var(--lg);
+  display: grid; place-items: center;
+  background: var(--accent);
+  clip-path: polygon(0 0, 100% 0, 100% 78%, 82% 100%, 0 100%);
+  flex: 0 0 auto;
+}
+.kgr-logo-ball {
+  position: absolute; right: -4px; bottom: -4px;
+  width: calc(var(--lg) * 0.42); height: calc(var(--lg) * 0.42);
+  border-radius: 50%;
+  background: var(--ink);
+  border: 2px solid var(--accent);
+}
+.kgr-logo-mono {
+  font-family: var(--font-display);
+  font-size: calc(var(--lg) * 0.42);
+  color: var(--accent-ink);
+  letter-spacing: -0.02em;
+  transform: translateY(1px);
+}
+.kgr-logo-word { display: flex; flex-direction: column; line-height: 0.86; }
+.kgr-logo-word b {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: 20px; letter-spacing: 0.01em; color: var(--cream);
+}
+.kgr-logo-word i {
+  font-family: var(--font-mono); font-style: normal;
+  font-size: 8.5px; letter-spacing: 0.34em; color: var(--steel);
+  margin-top: 2px;
+}
+.kgr-logo-word.is-light b { color: var(--cream); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.kgr-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: 9px;
+  font-family: var(--font-cond); font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  border: 0; border-radius: var(--radius);
+  transition: transform .08s ease, background .15s ease, box-shadow .15s ease;
+  white-space: nowrap;
+}
+.kgr-btn:active { transform: translateY(1px); }
+.kgr-btn-ico { display: inline-flex; transform: translateY(0); }
+.kgr-btn--md { font-size: 15px; padding: 12px 20px; }
+.kgr-btn--lg { font-size: 18px; padding: 16px 28px; }
+.kgr-btn--sm { font-size: 13px; padding: 8px 14px; letter-spacing: 0.05em; }
+.kgr-btn.is-full { width: 100%; }
+
+.kgr-btn--primary { background: var(--accent); color: var(--accent-ink); }
+.kgr-btn--primary:hover { background: var(--accent-2); box-shadow: 0 0 0 3px rgba(232,98,44,0.22); }
+.kgr-btn--outline { background: transparent; color: var(--cream); box-shadow: inset 0 0 0 2px var(--line-2); }
+.kgr-btn--outline:hover { box-shadow: inset 0 0 0 2px var(--accent); color: var(--accent); }
+.kgr-btn--ghost { background: transparent; color: var(--cream-dim); }
+.kgr-btn--ghost:hover { color: var(--cream); background: var(--ink-3); }
+.kgr-btn--dark { background: var(--ink-3); color: var(--cream); }
+.kgr-btn--dark:hover { background: var(--ink-4); }
+
+/* ============================================================
+   TAGS
+   ============================================================ */
+.kgr-tag {
+  display: inline-flex; align-items: center; gap: 6px;
+  font-family: var(--font-mono); font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.14em;
+  padding: 4px 9px; border-radius: 2px;
+}
+.kgr-tag--default { background: var(--ink-3); color: var(--cream-dim); }
+.kgr-tag--accent  { background: var(--accent); color: var(--accent-ink); }
+.kgr-tag--outline { box-shadow: inset 0 0 0 1px var(--line-2); color: var(--steel); }
+.kgr-tag--live    { background: var(--loss); color: #fff; }
+.kgr-tag--win     { background: rgba(111,191,115,0.16); color: var(--win); }
+
+.kgr-kicker {
+  font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.28em; color: var(--accent);
+  margin-bottom: 12px;
+}
+
+/* ============================================================
+   TEAM CHIP / CREST / AVATAR
+   ============================================================ */
+.kgr-teamchip { display: inline-flex; align-items: center; gap: 8px; font-weight: 600; }
+.kgr-teamchip-dot { width: 10px; height: 10px; border-radius: 2px; flex: 0 0 auto; }
+.kgr-teamchip--sm { font-size: 13px; }
+.kgr-teamchip--md { font-size: 15px; }
+.kgr-teamchip--lg { font-size: 19px; font-family: var(--font-cond); font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em; }
+
+.kgr-crest {
+  display: grid; place-items: center;
+  width: var(--cs); height: var(--cs);
+  background: linear-gradient(145deg, color-mix(in srgb, var(--cc) 92%, #000), color-mix(in srgb, var(--cc) 65%, #000));
+  clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+  flex: 0 0 auto;
+}
+.kgr-crest-abbr {
+  font-family: var(--font-display); font-size: calc(var(--cs) * 0.30);
+  color: #fff; letter-spacing: 0.02em;
+  text-shadow: 0 1px 0 rgba(0,0,0,0.3);
+  transform: translateY(-6%);
+}
+
+.kgr-avatar {
+  display: grid; place-items: center;
+  width: var(--as); height: var(--as); border-radius: 50%;
+  background: var(--ink-3); color: var(--cream);
+  box-shadow: inset 0 0 0 2px var(--ac);
+  font-family: var(--font-mono); font-weight: 700; font-size: calc(var(--as) * 0.34);
+  flex: 0 0 auto;
+}
+.kgr-avatar b { font-weight: 700; }
+
+/* ============================================================
+   PHOTO PLACEHOLDER
+   ============================================================ */
+.kgr-photo {
+  position: relative; width: 100%; overflow: hidden;
+  background:
+    repeating-linear-gradient(-45deg, rgba(244,240,230,0.045) 0 10px, transparent 10px 20px),
+    var(--ink-2);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  display: grid; place-items: center;
+}
+.kgr-photo-grain {
+  position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(244,240,230,0.06) 1px, transparent 1px);
+  background-size: 7px 7px;
+}
+.kgr-photo-label {
+  position: relative;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--steel);
+  padding: 5px 10px; border: 1px solid var(--line-2); border-radius: 2px;
+  background: rgba(23,21,15,0.6);
+}
+
+/* ============================================================
+   STAT BLOCK
+   ============================================================ */
+.kgr-stat { text-align: left; }
+.kgr-stat-val {
+  font-family: var(--font-mono); font-weight: 700; font-size: 26px;
+  line-height: 1; letter-spacing: -0.02em; color: var(--cream);
+  font-variant-numeric: tabular-nums;
+}
+.kgr-stat-val.is-accent { color: var(--accent); }
+.kgr-stat.is-big .kgr-stat-val { font-size: 44px; }
+.kgr-stat-label {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.18em;
+  text-transform: uppercase; color: var(--steel); margin-top: 7px;
+}
+.kgr-stat-sub { font-size: 12px; color: var(--cream-dim); margin-top: 3px; }
+
+/* ============================================================
+   SECTION HEAD
+   ============================================================ */
+.kgr-sechead { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; margin-bottom: 24px; }
+.kgr-sechead-title {
+  font-family: var(--font-display); font-weight: 400;
+  font-size: clamp(28px, 4vw, 44px); letter-spacing: 0.005em;
+  text-transform: uppercase; color: var(--cream);
+}
+
+/* ============================================================
+   FORM FIELDS
+   ============================================================ */
+.kgr-field { display: flex; flex-direction: column; gap: 8px; }
+.kgr-field-label {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--cream-dim);
+}
+.kgr-req { color: var(--accent); font-style: normal; margin-left: 3px; }
+.kgr-field-hint { font-size: 12.5px; color: var(--steel); }
+
+.kgr-input, .kgr-select, textarea.kgr-input {
+  width: 100%; font-family: var(--font-body); font-size: 16px;
+  color: var(--cream); background: var(--ink);
+  border: 1px solid var(--line-2); border-radius: var(--radius);
+  padding: 13px 14px; transition: border .15s ease, box-shadow .15s ease;
+}
+.kgr-input::placeholder { color: var(--steel-dim); }
+.kgr-input:focus, .kgr-select:focus, textarea.kgr-input:focus {
+  outline: none; border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(232,98,44,0.18);
+}
+.kgr-select { appearance: none; cursor: pointer;
+  background-image: linear-gradient(45deg, transparent 50%, var(--steel) 50%), linear-gradient(135deg, var(--steel) 50%, transparent 50%);
+  background-position: calc(100% - 18px) 20px, calc(100% - 13px) 20px;
+  background-size: 5px 5px, 5px 5px; background-repeat: no-repeat;
+}
+
+/* ============================================================
+   CARD / PANEL
+   ============================================================ */
+.kgr-card {
+  background: var(--ink-2); border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.kgr-card--pad { padding: 22px; }
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+.kgr-table { width: 100%; border-collapse: collapse; }
+.kgr-table th {
+  font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em;
+  text-transform: uppercase; color: var(--steel); text-align: right;
+  padding: 12px 10px; border-bottom: 1px solid var(--line-2); font-weight: 700;
+}
+.kgr-table th:first-child, .kgr-table td:first-child { text-align: left; }
+.kgr-table td {
+  padding: 13px 10px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 14px; text-align: right;
+  font-variant-numeric: tabular-nums; color: var(--cream);
+}
+.kgr-table tr:hover td { background: rgba(244,240,230,0.025); }
+.kgr-table .is-me td { background: rgba(232,98,44,0.08); }
+.kgr-table .is-me td:first-child { box-shadow: inset 3px 0 0 var(--accent); }
+.kgr-rank { color: var(--steel); width: 28px; }
+
+/* utility */
+.kgr-row { display: flex; align-items: center; }
+.kgr-divider { height: 1px; background: var(--line); border: 0; margin: 0; }
+.kgr-grow { flex: 1; }
+.text-dim { color: var(--cream-dim); }
+.text-steel { color: var(--steel); }
+.text-accent { color: var(--accent); }
