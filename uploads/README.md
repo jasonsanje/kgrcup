@@ -1,20 +1,23 @@
 # uploads
 
-Drop the hero photo here.
-
-**Expected filename:** `pasted-1786796703887-0.png`
-
-**Source:** Claude Design project `bc4876af-f979-4c5e-b534-f6dd1a5eba66`,
-at the path `uploads/pasted-1786796703887-0.png`.
-
-The final path must be, exactly:
+The hero photo.
 
 ```
-uploads/pasted-1786796703887-0.png
+uploads/pasted-1786796703887-0.jpeg
 ```
 
-That is what `index.html` references. If you'd rather use a different filename,
-update the `src` on `#hero-img` in `index.html` to match.
+720 × 377 progressive JPEG — an aerial view of the KGR residential towers and
+the surrounding city, with a KGR logo watermark near the centre. Originally
+exported from Claude Design project `bc4876af-f979-4c5e-b534-f6dd1a5eba66`.
+
+That path is what the `src` on `#hero-img` in `index.html` references. Replacing
+the photo means updating that `src` and the image's `alt` text to match.
+
+## Resolution
+
+At 720px wide the image is upscaled roughly 2× on a desktop viewport, so it is
+visibly soft at full size. The veil hides most of that. A higher-resolution
+export would sharpen the hero if one is available.
 
 ## If the file is missing
 

@@ -25,7 +25,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
   than every second; the digit tick animation is disabled under
   `prefers-reduced-motion: reduce`; the hero image has descriptive alt text.
 - `app/styles.css`, the KGR design system stylesheet, taken verbatim.
-- `uploads/` with instructions for adding the hero photo. The photo itself is
-  not yet in the repository; the page degrades to a dim hero without it.
+- Hero photo `uploads/pasted-1786796703887-0.jpeg`, an aerial view of the KGR
+  residential towers, with alt text describing it.
+
+### Changed
+- Strengthened the hero veil. The source design's gradient was tuned against a
+  placeholder; against the real daylight aerial it left the kicker and subtitle
+  on sunlit buildings at poor contrast. The radial centre stop goes from 45% to
+  66% opacity and a soft vertical scrim sits behind the type.
 
 [Unreleased]: https://github.com/jasonsanje/kgrcup/commits/main
