@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KGR Cup — Fall ’26 Countdown</title>
+<meta name="description" content="Countdown to KGR Cup opening night — Saturday, September 5, 2026, 7:00 PM at Gameville, Greenfield District.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app/styles.css">
+<style>
+/* ============================================================
+   KGR CUP COUNTDOWN — page-specific rules (.cd-*)
+   Shared tokens and .kgr-* components come from app/styles.css.
+
+   The page occupies exactly one viewport and never scrolls:
+   body is the flex column, nav is a rigid 64px item, hero takes
+   the remainder. Every vertical measure below is a vh-aware
+   clamp() so the composition compresses on short screens
+   instead of overflowing.
+   ============================================================ */
+
+body{
+  background:var(--ink);
+  height:100dvh;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
+a{color:var(--accent)}
+a:hover{color:var(--accent-2)}
+
+/* Visually hidden, still announced by screen readers. */
+.cd-sr{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;
+  overflow:hidden;clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
+}
+
+/* ---- NAV ---- */
+.cd-nav{
+  flex:0 0 64px;
+  z-index:50;
+  background:rgba(23,21,15,.82);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--line);
+}
+.cd-nav-in{display:flex;align-items:center;gap:26px;height:64px}
+.cd-nav-links{display:flex;gap:22px;margin-left:auto;font-family:var(--font-cond);font-weight:700;text-transform:uppercase;letter-spacing:.06em;font-size:14px}
+.cd-nav-links a{color:var(--cream-dim);text-decoration:none}
+.cd-nav-links a:hover{color:var(--cream)}
+.cd-nav-links a.is-on{color:var(--accent)}
+
+/* ---- HERO ---- */
+.cd-hero{
+  position:relative;
+  flex:1 1 auto;
+  min-height:0;
+  overflow:hidden;
+  display:grid;
+  /* minmax(0,1fr), not the default auto: an auto track sizes to
+     max-content, which lets the subtitle refuse to wrap and pushes
+     the whole page wider than the viewport. */
+  grid-template-columns:minmax(0,1fr);
+  align-items:center;
+  padding:clamp(14px,3.6vh,56px) 0;
+}
+.cd-hero-bg{position:absolute;inset:0;background:var(--ink-2)}
+.cd-hero-img{width:100%;height:100%;object-fit:cover;object-position:center 40%;filter:saturate(.85) contrast(1.05)}
+.cd-hero-veil{position:absolute;inset:0;background:radial-gradient(120% 90% at 50% 30%,rgba(23,21,15,.45) 0%,rgba(23,21,15,.86) 55%,var(--ink) 100%)}
+.cd-hero-in{position:relative;text-align:center;min-width:0}
+
+.cd-kicker{font-family:var(--font-mono);font-size:clamp(9px,1.2vh,11px);font-weight:700;text-transform:uppercase;letter-spacing:.34em;color:var(--accent)}
+.cd-h1{
+  font-family:var(--font-display);font-weight:400;text-transform:uppercase;
+  font-size:clamp(34px,min(8.4vw,12vh),116px);
+  line-height:.86;letter-spacing:.005em;
+  margin:clamp(8px,2vh,18px) 0 0;
+}
+.cd-h1 em{font-style:normal;color:var(--accent);display:block}
+.cd-sub{
+  margin-top:clamp(8px,1.8vh,16px);
+  font-family:var(--font-cond);font-weight:600;text-transform:uppercase;
+  letter-spacing:.22em;font-size:clamp(11px,min(1.6vw,1.9vh),16px);color:var(--cream-dim);
+}
+
+/* ---- CLOCK ---- */
+.cd-clock{
+  display:flex;align-items:flex-start;justify-content:center;
+  gap:clamp(6px,1.6vw,20px);
+  margin:clamp(16px,4.5vh,54px) 0 0;
+}
+.cd-unit{display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.4vh,12px)}
+.cd-digits{display:flex;gap:6px}
+.cd-dig{
+  position:relative;
+  font-family:var(--font-mono);font-weight:700;font-variant-numeric:tabular-nums;
+  font-size:clamp(26px,min(7.6vw,10.5vh),104px);
+  line-height:1;padding:.14em .1em .16em;min-width:.78em;text-align:center;
+  color:var(--cream);
+  background:linear-gradient(180deg,var(--ink-3),var(--ink-2));
+  border:1px solid var(--line-2);border-radius:var(--radius);
+  box-shadow:0 10px 30px rgba(0,0,0,.45);
+}
+.cd-dig::after{content:"";position:absolute;left:0;right:0;top:50%;height:1px;background:rgba(0,0,0,.5)}
+.cd-dig.is-tick{animation:cdtick .42s ease}
+@keyframes cdtick{0%{transform:translateY(-6%);opacity:.35;color:var(--accent)}60%{color:var(--accent)}100%{transform:none;opacity:1}}
+.cd-unit-label{font-family:var(--font-mono);font-size:clamp(8px,min(1.1vw,1.3vh),11.5px);letter-spacing:.28em;text-transform:uppercase;color:var(--steel)}
+.cd-colon{font-family:var(--font-mono);font-weight:700;font-size:clamp(18px,min(4vw,5.5vh),56px);color:var(--steel-dim);padding-top:.34em}
+.cd-clock.is-live .cd-dig{border-color:var(--accent);color:var(--accent)}
+
+/* A full-screen digit flashing once a second is a real problem
+   for motion-sensitive users. */
+@media (prefers-reduced-motion: reduce){
+  .cd-dig.is-tick{animation:none}
+}
+
+.cd-cta{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:clamp(16px,4vh,46px)}
+.cd-note{
+  margin-top:clamp(10px,2.4vh,22px);
+  font-family:var(--font-mono);font-size:clamp(9.5px,1.3vh,11.5px);
+  letter-spacing:.16em;text-transform:uppercase;color:var(--steel);
+}
+.cd-note.is-live{color:var(--accent)}
+
+/* ---- NARROW ----
+   Keep the clock on one row; wrapping would add height the
+   viewport does not have. Drop the colons instead. */
+@media (max-width:700px){
+  .cd-colon{display:none}
+  .cd-clock{gap:clamp(8px,3vw,18px)}
+}
+
+/* ---- SHORT LANDSCAPE ----
+   Below roughly 430px of height the vh clamps bottom out and the
+   CTA would be clipped with no way to scroll to it. Shed the
+   kicker and tighten everything so the whole composition fits. */
+@media (max-height:430px) and (orientation:landscape){
+  .cd-hero{padding:8px 0}
+  .cd-kicker{display:none}
+  .cd-h1{font-size:clamp(24px,min(5.6vw,11vh),52px);line-height:.84;margin-top:0}
+  .cd-sub{margin-top:6px;font-size:clamp(9px,1.5vh,12px);letter-spacing:.16em}
+  .cd-clock{margin-top:clamp(8px,2.4vh,16px);gap:clamp(4px,1.2vw,12px)}
+  .cd-dig{font-size:clamp(18px,min(5vw,9vh),40px);box-shadow:none}
+  .cd-digits{gap:4px}
+  .cd-unit{gap:4px}
+  .cd-unit-label{font-size:8px;letter-spacing:.2em}
+  .cd-colon{display:none}
+  .cd-cta{margin-top:clamp(8px,2.4vh,16px)}
+  .cd-cta .kgr-btn--lg{font-size:14px;padding:9px 18px}
+  .cd-note{margin-top:6px;font-size:9px;letter-spacing:.12em}
+}
+</style>
+</head>
+<body>
+
+<nav class="cd-nav"><div class="kgr-wrap cd-nav-in">
+  <span class="kgr-logo" style="--lg:34px"><span class="kgr-logo-badge"><span class="kgr-logo-mono">K</span><span class="kgr-logo-ball"></span></span><span class="kgr-logo-word"><b>KGRBL</b><i>COMMUNITY</i></span></span>
+  <span class="cd-nav-links"><a href="#" class="is-on" aria-current="page">Countdown</a></span>
+</div></nav>
+
+<header class="cd-hero">
+  <div class="cd-hero-bg"><img class="cd-hero-img" id="hero-img" src="uploads/pasted-1786796703887-0.png" alt="Aerial view of the KGR development in the Greenfield District, home of the KGR Cup."></div>
+  <div class="cd-hero-veil"></div>
+
+  <div class="kgr-wrap cd-hero-in">
+    <div class="cd-kicker">KGR Cup · Fall ’26 · Opening Night</div>
+    <h1 class="cd-h1">KGR Cup<em>tips off Sept. 5</em></h1>
+    <p class="cd-sub">Gameville, Greenfield District · 7:00 PM · Six teams, one community</p>
+
+    <!-- The digit grid is decorative to assistive tech; the live
+         region below carries the countdown as a sentence. -->
+    <div class="cd-clock" id="clock" aria-hidden="true">
+      <div class="cd-unit"><div class="cd-digits" data-unit="d"></div><div class="cd-unit-label">Days</div></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><div class="cd-digits" data-unit="h"></div><div class="cd-unit-label">Hours</div></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><div class="cd-digits" data-unit="m"></div><div class="cd-unit-label">Min</div></div>
+      <div class="cd-colon">:</div>
+      <div class="cd-unit"><div class="cd-digits" data-unit="s"></div><div class="cd-unit-label">Sec</div></div>
+    </div>
+    <p class="cd-sr" id="clock-sr" aria-live="polite"></p>
+
+    <div class="cd-cta">
+      <a class="kgr-btn kgr-btn--primary kgr-btn--lg" href="https://www.facebook.com/groups/28612878563060345" target="_blank" rel="noopener noreferrer">Go to FB Community</a>
+    </div>
+    <div class="cd-note" id="note">Counting down to opening night</div>
+  </div>
+</header>
+
+<script>
+const TARGET = new Date("2026-09-05T19:00:00");
+
+const clock = document.getElementById("clock");
+const note = document.getElementById("note");
+const sr = document.getElementById("clock-sr");
+
+const boxes = {};
+document.querySelectorAll(".cd-digits").forEach(el => boxes[el.dataset.unit] = el);
+
+// Only digits whose character actually changed get the tick
+// animation, so a minute rolling over does not flash all eight.
+function setUnit(key, val, pad){
+  const s = String(val).padStart(pad, "0");
+  const el = boxes[key];
+  if (el.children.length !== s.length){
+    el.innerHTML = s.split("").map(c => '<span class="cd-dig">' + c + '</span>').join("");
+    return;
+  }
+  s.split("").forEach((c, i) => {
+    const d = el.children[i];
+    if (d.textContent !== c){
+      d.textContent = c;
+      d.classList.remove("is-tick");
+      void d.offsetWidth;
+      d.classList.add("is-tick");
+    }
+  });
+}
+
+const plural = (n, word) => n + " " + word + (n === 1 ? "" : "s");
+
+// Built from days/hours/minutes only: the sentence changes on the
+// minute rather than every second, so screen readers are not flooded.
+let lastSaid = "";
+function say(text){
+  if (text !== lastSaid){ lastSaid = text; sr.textContent = text; }
+}
+
+function tick(){
+  const diff = TARGET - new Date();
+
+  if (diff <= 0){
+    clock.classList.add("is-live");
+    setUnit("d", 0, 2); setUnit("h", 0, 2); setUnit("m", 0, 2); setUnit("s", 0, 2);
+    note.textContent = "The season is underway";
+    note.classList.add("is-live");
+    say("The season is underway");
+    return;
+  }
+
+  const total = Math.floor(diff / 1000);
+  const d = Math.floor(total / 86400);
+  const h = Math.floor(total % 86400 / 3600);
+  const m = Math.floor(total % 3600 / 60);
+  const s = total % 60;
+
+  // Days pad to two digits and keep their natural width above 99.
+  setUnit("d", d, Math.max(String(d).length, 2));
+  setUnit("h", h, 2);
+  setUnit("m", m, 2);
+  setUnit("s", s, 2);
+
+  say(plural(d, "day") + ", " + plural(h, "hour") + ", " + plural(m, "minute") + " until tip-off");
+}
+
+// Static page, no hydration to match — render the real digits on
+// first paint rather than a placeholder pass.
+tick();
+setInterval(tick, 1000);
+
+// The veil sits over the page background, so a missing photo should
+// read as dim rather than as a broken image. The load may already have
+// failed by the time this runs, which fires no event — check for that
+// case as well as listening.
+const heroImg = document.getElementById("hero-img");
+const dropHero = () => heroImg.remove();
+heroImg.addEventListener("error", dropHero);
+if (heroImg.complete && heroImg.naturalWidth === 0) dropHero();
+</script>
+</body>
+</html>
